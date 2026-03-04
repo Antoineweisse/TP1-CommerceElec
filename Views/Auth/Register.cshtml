@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h3 class="mb-0">Inscription</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-action="Register">
+                    <div class="form-group mb-3">
+                        <label for="Prenom" class="form-label">Prénom</label>
+                        <input name="Prenom" id="Prenom" type="text" class="form-control" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="Nom" class="form-label">Nom</label>
+                        <input name="Nom" id="Nom" type="text" class="form-control" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="Email" class="form-label">Courriel</label>
+                        <input name="Email" id="Email" type="email" class="form-control" required />
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label for="motDePasse" class="form-label">Mot de passe</label>
+                        <input name="motDePasse" id="motDePasse" type="password" class="form-control" required />
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-block">Créer mon compte</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center text-muted">
+                Déjà un compte ? <a asp-action="Login">Se connecter</a>
+            </div>
+        </div>
+    </div>
+</div>
