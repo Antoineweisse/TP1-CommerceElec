@@ -10,7 +10,8 @@
             <h1 class="display-5">Nos Produits</h1>
         </div>
         <div class="col-md-4">
-            <form method="get" class="d-flex">
+            <form asp-action="Index" method="get" class="d-flex">
+                <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
                 <input class="form-control me-2" type="search" placeholder="Rechercher un produit..." aria-label="Search" name="search">
                 <button class="btn btn-outline-primary" type="submit">Rechercher</button>
             </form>
@@ -20,14 +21,40 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="btn-group" role="group" aria-label="Filtres">
-                <a href="#" class="btn btn-outline-secondary">Tous</a>
-                <a href="#" class="btn btn-outline-secondary">Électronique</a>
-                <a href="#" class="btn btn-outline-secondary">Vêtements</a>
+                <a 
+                    asp-action="Index" 
+                    asp-route-search="@Context.Request.Query["search"]"
+                    class="btn btn-outline-secondary @(string.IsNullOrEmpty(Context.Request.Query["category"]) ? "active" : "")"
+                >
+                    Tous
+                </a>
+                @if (ViewBag.Categories != null){
+                    foreach (var cat in ViewBag.Categories)
+                    {
+                        <a 
+                            asp-action="Index" 
+                            asp-route-search="@Context.Request.Query["search"]"
+                            asp-route-category="@cat" 
+                            class="btn btn-outline-secondary @(Context.Request.Query["category"] == cat ? "active" : "")"
+                            >
+                                @cat
+                        </a>
+                    }
+                }
             </div>
         </div>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        @if (!Model.Any())
+        {
+            <div class="col">
+                <div class="alert alert-info" role="alert">
+                    Aucun produit trouvé.
+                </div>
+            </div>
+        }
+
         @foreach (var produit in Model)
         {
             <div class="col">
@@ -37,6 +64,7 @@
                         <h5 class="card-title text-truncate">@produit.Titre</h5>
                         <p class="card-text text-muted text-truncate">@produit.Description</p>
                         <p class="card-text fw-bold mt-auto">$@produit.Prix.ToString("F2")</p>
+                        <p class="card-text fw-bold mt-auto">$@produit.Categorie</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="#" class="btn btn-sm btn-outline-primary">Voir</a>
                             <a href="#" class="btn btn-sm btn-success">Ajouter</a>

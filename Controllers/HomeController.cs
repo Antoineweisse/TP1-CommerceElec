@@ -14,10 +14,24 @@ public class HomeController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string search, string category)
     {
-        var produits = await _context.Produits.ToListAsync();
-        return View(produits);
+        var categories = await _context.Produits
+            .Select(p => p.Categorie)
+            .Distinct()
+            .ToListAsync();
+        ViewBag.Categories = categories;
+
+        var query = _context.Produits.AsQueryable();
+        if (!string.IsNullOrEmpty(search))
+        {
+            query = query.Where(p => p.Titre.ToLower().Contains(search.ToLower()));
+        }
+        if (!string.IsNullOrEmpty(category))
+        {
+            query = query.Where(p => p.Categorie == category);
+        }
+        return View(await query.ToListAsync());
     }
 
     public IActionResult Privacy()
