@@ -14,6 +14,8 @@ namespace tp1.Data
 
         public DbSet<Panier> Paniers { get; set; } = null!;
 
+        public DbSet<PanierItem> PanierItems { get; set; } = null!;
+
         public DbSet<Facture> Factures { get; set; } = null!;
     }
 
