@@ -49,7 +49,7 @@ public class AuthController : Controller
         if (!ModelState.IsValid)
             return View(utilisateur);
         utilisateur.MotDePasse = HashPassword(motDePasse);
-        utilisateur.Role = TypeUtilisateur.Client;
+        // utilisateur.Role = TypeUtilisateur.Client;
 
         _context.Utilisateurs.Add(utilisateur);
         _context.SaveChanges();

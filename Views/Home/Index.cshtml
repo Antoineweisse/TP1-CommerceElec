@@ -66,7 +66,9 @@
                         <p class="card-text fw-bold mt-auto">$@produit.Prix.ToString("F2")</p>
                         <p class="card-text fw-bold mt-auto">$@produit.Categorie</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="#" class="btn btn-sm btn-outline-primary">Voir</a>
+                            <a asp-action="Details" asp-route-id="@produit.Id" class="btn btn-sm btn-outline-primary">
+                                Voir
+                            </a>
                             <a href="#" class="btn btn-sm btn-success">Ajouter</a>
                         </div>
                     </div>

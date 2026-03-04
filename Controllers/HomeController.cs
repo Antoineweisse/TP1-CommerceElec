@@ -34,6 +34,25 @@ public class HomeController : Controller
         return View(await query.ToListAsync());
     }
 
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var produit = await _context.Produits
+            .Include(p => p.Vendeur)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        
+        if (produit == null)
+        {
+            return NotFound();
+        }
+
+        return View(produit);
+    }
+
     public IActionResult Privacy()
     {
         return View();
