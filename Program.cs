@@ -12,6 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
 builder.Services.AddHttpClient<DataFetcherService>();
+builder.Services.AddHttpContextAccessor();
 
 // Configure Stripe
 builder.Services.Configure<tp1.Settings.StripeSettings>(builder.Configuration.GetSection("Stripe"));

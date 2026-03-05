@@ -3,6 +3,7 @@ using tp1.Data;
 using tp1.Models;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 public class AuthController : Controller
 {
@@ -72,16 +73,16 @@ public class AuthController : Controller
         }
     }
 
-    // public async Task<IActionResult> Profil()
-    // {
-    //     // int? userId = HttpContext.Session.GetInt32("UserId");
-    //     // if (userId == null) return RedirectToAction("Login");
+    public async Task<IActionResult> Profil()
+    {
+        int? userId = HttpContext.Session.GetInt32("UserId");
+        if (userId == null) return RedirectToAction("Login");
 
-    //     // var utilisateur = await _context.Utilisateurs
-    //     //     .FirstOrDefaultAsync(u => u.Id == userId);
+        var utilisateur = await _context.Utilisateurs
+            .FirstOrDefaultAsync(u => u.Id == userId.Value);
         
-    //     // if (utilisateur == null) return RedirectToAction("Login");
+        if (utilisateur == null) return RedirectToAction("Login");
 
-    //     // return View(utilisateur);
-    // }
+        return View(utilisateur);
+    }
 }

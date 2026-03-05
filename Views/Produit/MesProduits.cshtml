@@ -1,0 +1,61 @@
+@model IEnumerable<tp1.Models.Produit>
+
+@{
+    ViewData["Title"] = "Mes Produits";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Mes Produits en vente</h1>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Ajouter un nouveau produit
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Image</th>
+                    <th>Titre</th>
+                    <th>Prix</th>
+                    <th>Catégorie</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.ImageUrl" alt="@item.Titre" style="height: 50px; width: 50px; object-fit: cover;" class="rounded" />
+                        </td>
+                        <td class="align-middle"><strong>@item.Titre</strong></td>
+                        <td class="align-middle">@item.Prix.ToString("C")</td>
+                        <td class="align-middle"><span class="badge bg-secondary">@item.Categorie</span></td>
+                        <td class="text-end align-middle">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Modifier</a>
+                            
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Supprimer ce produit ?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            Vous n'avez pas encore de produits en vente.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

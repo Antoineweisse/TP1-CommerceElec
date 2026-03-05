@@ -1,0 +1,77 @@
+@model tp1.Models.Utilisateur
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Mon Profil";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-person-circle display-1 text-primary"></i>
+                    </div>
+                    <h4>@Model.Nom @Model.Prenom</h4>
+                    <p class="text-muted">@Model.Email</p>
+                    <span class="badge @(Model.Role == TypeUtilisateur.Vendeur ? "bg-success" : "bg-info")">
+                        @Model.Role
+                    </span>
+                    <hr>
+                    <a asp-action="Logout" class="btn btn-outline-danger btn-sm">Déconnexion</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Tableau de bord</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <a asp-controller="Panier" asp-action="Index" class="btn btn-light w-100 py-4 border shadow-sm">
+                                <i class="bi bi-cart3 h2 d-block"></i>
+                                Mon Panier
+                            </a>
+                        </div>
+                        @if (Model.Role == TypeUtilisateur.Client)
+                        {
+                            <div class="col-md-6">
+                                <a asp-controller="Facture" asp-action="MesAchats" class="btn btn-light w-100 py-4 border shadow-sm">
+                                    <i class="bi bi-bag-check h2 d-block text-success"></i>
+                                    Mes Commandes
+                                </a>
+                            </div>
+                        }
+                        
+                        @if (Model.Role == TypeUtilisateur.Vendeur)
+                        {
+                            <div class="col-md-6">
+                                <a asp-controller="Produit" asp-action="MesProduits" class="btn btn-light w-100 py-4 border shadow-sm">
+                                    <i class="bi bi-box-seam h2 d-block text-success"></i>
+                                    Gérer mes produits
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-controller="Facture" asp-action="MesVentes" class="btn btn-outline-success w-100 py-4 shadow-sm">
+                                    <i class="bi bi-plus-circle h2 d-block"></i>
+                                    Mes ventes
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-controller="Produit" asp-action="Create" class="btn btn-success w-100 py-4 shadow-sm text-white">
+                                    <i class="bi bi-plus-circle h2 d-block"></i>
+                                    Mettre un article en vente
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
