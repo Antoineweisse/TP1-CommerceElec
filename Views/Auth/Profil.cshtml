@@ -38,6 +38,15 @@
                                 Mon Panier
                             </a>
                         </div>
+                        @if (Model.Role == TypeUtilisateur.Client)
+                        {
+                            <div class="col-md-6">
+                                <a asp-controller="Facture" asp-action="MesAchats" class="btn btn-light w-100 py-4 border shadow-sm">
+                                    <i class="bi bi-bag-check h2 d-block text-success"></i>
+                                    Mes Commandes
+                                </a>
+                            </div>
+                        }
                         
                         @if (Model.Role == TypeUtilisateur.Vendeur)
                         {
@@ -45,6 +54,12 @@
                                 <a asp-controller="Produit" asp-action="MesProduits" class="btn btn-light w-100 py-4 border shadow-sm">
                                     <i class="bi bi-box-seam h2 d-block text-success"></i>
                                     Gérer mes produits
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-controller="Facture" asp-action="MesVentes" class="btn btn-outline-success w-100 py-4 shadow-sm">
+                                    <i class="bi bi-plus-circle h2 d-block"></i>
+                                    Mes ventes
                                 </a>
                             </div>
                             <div class="col-md-6">
