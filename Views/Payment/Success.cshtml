@@ -1,11 +1,14 @@
 @{
-    ViewData["Title"] = "Paiement éffectué";
+    ViewData["Title"] = "Paiement effectué";
 }
 
 <div class="container mt-5 text-center">
     <div class="alert alert-success">
         <h2> Paiement réussi !</h2>
         <p>Votre commande a bien été traitée. Merci pour votre achat.</p>
+        <p>Facture #@ViewBag.FactureId</p>
     </div>
+    <a asp-controller="Facture" asp-action="Details" asp-route-id="@ViewBag.FactureId" class="btn btn-info me-2">Voir ma facture</a>
+    <a asp-controller="Facture" asp-action="MesAchats" class="btn btn-secondary me-2">Historique d'achats</a>
     <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Retour à l'accueil</a>
 </div>
