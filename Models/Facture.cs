@@ -7,15 +7,20 @@ public class Facture
 {
     public int Id { get; set; }
 
-    public int UtilisateurId { get; set; }
+    public DateTime DateFacture { get; set; } = DateTime.Now;
 
-    [ForeignKey("UtilisateurId")]
-    public virtual Utilisateur Utilisateur { get; set; } = null!;
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal MontantTotal { get; set; }
 
-    public virtual ICollection<Commande> Commandes { get; set; } = new List<Commande>();
-    
-    public int VendeurId { get; set; }
+    public string? PaiementId { get; set; }
 
-    [ForeignKey("VendeurId")]
-    public virtual Utilisateur Vendeur { get; set; } = null!;
+    public int ClientId { get; set; }
+
+    [ForeignKey("ClientId")]
+    public virtual Utilisateur Client { get; set; } = null!;
+
+    public int CommandeId { get; set; }
+
+    [ForeignKey("CommandeId")]
+    public virtual Commande Commande { get; set; } = null!;
 }

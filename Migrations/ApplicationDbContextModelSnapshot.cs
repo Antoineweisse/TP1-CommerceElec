@@ -29,21 +29,19 @@ namespace tp1.Migrations
                     b.Property<int?>("FactureId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IDStripe")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("PaiementId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Statut")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Total")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UtilisateurId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FactureId");
 
                     b.HasIndex("UtilisateurId");
 
@@ -56,19 +54,56 @@ namespace tp1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UtilisateurId")
+                    b.Property<int>("ClientId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("VendeurId")
+                    b.Property<int>("CommandeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateFacture")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("MontantTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PaiementId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("CommandeId")
+                        .IsUnique();
+
+                    b.ToTable("Factures");
+                });
+
+            modelBuilder.Entity("tp1.Models.LigneCommande", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CommandeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("PrixUnitaire")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProduitId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantite")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UtilisateurId");
+                    b.HasIndex("CommandeId");
 
-                    b.HasIndex("VendeurId");
+                    b.HasIndex("ProduitId");
 
-                    b.ToTable("Factures");
+                    b.ToTable("LigneCommandes");
                 });
 
             modelBuilder.Entity("tp1.Models.Panier", b =>
@@ -178,10 +213,6 @@ namespace tp1.Migrations
 
             modelBuilder.Entity("tp1.Models.Commande", b =>
                 {
-                    b.HasOne("tp1.Models.Facture", null)
-                        .WithMany("Commandes")
-                        .HasForeignKey("FactureId");
-
                     b.HasOne("tp1.Models.Utilisateur", "Utilisateur")
                         .WithMany()
                         .HasForeignKey("UtilisateurId")
@@ -193,21 +224,40 @@ namespace tp1.Migrations
 
             modelBuilder.Entity("tp1.Models.Facture", b =>
                 {
-                    b.HasOne("tp1.Models.Utilisateur", "Utilisateur")
+                    b.HasOne("tp1.Models.Utilisateur", "Client")
                         .WithMany()
-                        .HasForeignKey("UtilisateurId")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("tp1.Models.Utilisateur", "Vendeur")
-                        .WithMany()
-                        .HasForeignKey("VendeurId")
+                    b.HasOne("tp1.Models.Commande", "Commande")
+                        .WithOne("Facture")
+                        .HasForeignKey("tp1.Models.Facture", "CommandeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Utilisateur");
+                    b.Navigation("Client");
 
-                    b.Navigation("Vendeur");
+                    b.Navigation("Commande");
+                });
+
+            modelBuilder.Entity("tp1.Models.LigneCommande", b =>
+                {
+                    b.HasOne("tp1.Models.Commande", "Commande")
+                        .WithMany("Lignes")
+                        .HasForeignKey("CommandeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("tp1.Models.Produit", "Produit")
+                        .WithMany()
+                        .HasForeignKey("ProduitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Commande");
+
+                    b.Navigation("Produit");
                 });
 
             modelBuilder.Entity("tp1.Models.Panier", b =>
@@ -251,9 +301,11 @@ namespace tp1.Migrations
                     b.Navigation("Vendeur");
                 });
 
-            modelBuilder.Entity("tp1.Models.Facture", b =>
+            modelBuilder.Entity("tp1.Models.Commande", b =>
                 {
-                    b.Navigation("Commandes");
+                    b.Navigation("Facture");
+
+                    b.Navigation("Lignes");
                 });
 
             modelBuilder.Entity("tp1.Models.Panier", b =>

@@ -16,11 +16,12 @@ public class Commande
 {
     public int Id { get; set; }
 
-    public int IDStripe { get; set; }
+    public string? PaiementId { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateTime Date { get; set; } = DateTime.Now;
 
-    public double Total { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Total { get; set; }
 
     public StatutCommande Statut { get; set; }
 
@@ -28,5 +29,9 @@ public class Commande
 
     [ForeignKey("UtilisateurId")]
     public virtual Utilisateur Utilisateur { get; set; } = null!;
-   
+
+    public virtual ICollection<LigneCommande> Lignes { get; set; } = new List<LigneCommande>();
+
+    public int? FactureId { get; set; }
+    public virtual Facture? Facture { get; set; }
 }

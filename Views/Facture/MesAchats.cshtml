@@ -1,0 +1,49 @@
+@model List<tp1.Models.Facture>
+@{
+    ViewData["Title"] = "Mes achats";
+}
+
+<div class="container mt-4">
+    <h2>Mes achats</h2>
+
+    <div class="alert alert-info">
+        <strong>Total dépensé :</strong> @(((decimal)ViewBag.TotalDepense).ToString("C"))
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">Vous n'avez aucun achat pour le moment.</div>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Facture #</th>
+                    <th>Date</th>
+                    <th class="text-end">Montant</th>
+                    <th>Paiement Id</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var facture in Model)
+                {
+                    <tr>
+                        <td>@facture.Id</td>
+                        <td>@facture.DateFacture.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-end fw-bold">@facture.MontantTotal.ToString("C")</td>
+                        <td><small class="text-muted">@facture.PaiementId</small></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@facture.Id" class="btn btn-sm btn-outline-primary">
+                                Voir détails
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Retour à l'accueil</a>
+</div>
