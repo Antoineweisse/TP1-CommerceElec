@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Paiement";
+}
+
+<h2>Finaliser la commande</h2>
+
+<form asp-action="Charge" asp-controller="Payment" method="POST" id="payment-form">
+    <div>
+        <label for="card-element">Carte de crédit</label>
+        <div id="card-element" class="form-control p-2" style="height: 40px;"></div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Procéder au paiement</button>
+</form>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('@ViewBag.StripePublishableKey');
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                // Informer l'utilisateur s'il y a eu une erreur
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Envoyer le token au serveur
+                var token = result.token.id;
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'stripeToken');
+                hiddenInput.setAttribute('value', token);
+                form.appendChild(hiddenInput);
+                form.submit();
+            }
+        });
+    });
+</script>
