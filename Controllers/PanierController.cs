@@ -55,4 +55,26 @@ public class PanierController : Controller
             return Redirect(returnUrl);
         return RedirectToAction("Index", "Home");
     }
+
+    // Supprime un item du panier
+    [HttpPost]
+    public async Task<IActionResult> Remove(int id)
+    {
+        int? userId = HttpContext.Session.GetInt32("UserId");
+        if (userId == null) return RedirectToAction("Login", "Auth");
+
+        var panier = await _context.Paniers
+            .Include(p => p.Items)
+            .FirstOrDefaultAsync(p => p.UtilisateurId == userId);
+        if (panier == null) return RedirectToAction("Index");
+
+        var item = panier.Items.FirstOrDefault(i => i.Id == id);
+        if (item != null)
+        {
+            panier.Items.Remove(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        return RedirectToAction("Index");
+    }
 }
