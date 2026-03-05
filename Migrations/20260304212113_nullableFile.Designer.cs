@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tp1.Data;
 
@@ -10,9 +11,11 @@ using tp1.Data;
 namespace tp1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260304212113_nullableFile")]
+    partial class nullableFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -87,30 +90,6 @@ namespace tp1.Migrations
                     b.ToTable("Paniers");
                 });
 
-            modelBuilder.Entity("tp1.Models.PanierItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PanierId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quantite")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PanierId");
-
-                    b.HasIndex("ProduitId");
-
-                    b.ToTable("PanierItems");
-                });
-
             modelBuilder.Entity("tp1.Models.Produit", b =>
                 {
                     b.Property<int>("Id")
@@ -129,6 +108,9 @@ namespace tp1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("PanierId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("Prix")
                         .HasColumnType("decimal(18,2)");
 
@@ -140,6 +122,8 @@ namespace tp1.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PanierId");
 
                     b.HasIndex("VendeurId");
 
@@ -221,27 +205,12 @@ namespace tp1.Migrations
                     b.Navigation("Utilisateur");
                 });
 
-            modelBuilder.Entity("tp1.Models.PanierItem", b =>
-                {
-                    b.HasOne("tp1.Models.Panier", "Panier")
-                        .WithMany("Items")
-                        .HasForeignKey("PanierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("tp1.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Panier");
-
-                    b.Navigation("Produit");
-                });
-
             modelBuilder.Entity("tp1.Models.Produit", b =>
                 {
+                    b.HasOne("tp1.Models.Panier", null)
+                        .WithMany("Produits")
+                        .HasForeignKey("PanierId");
+
                     b.HasOne("tp1.Models.Utilisateur", "Vendeur")
                         .WithMany()
                         .HasForeignKey("VendeurId")
@@ -258,7 +227,7 @@ namespace tp1.Migrations
 
             modelBuilder.Entity("tp1.Models.Panier", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("Produits");
                 });
 #pragma warning restore 612, 618
         }

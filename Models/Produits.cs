@@ -24,6 +24,7 @@ public class Produit
     public required string ImageUrl { get; set; }
 
     public int VendeurId { get; set; }
+
     [ForeignKey("VendeurId")]
-    public Utilisateur? Vendeur { get; set; }
+    public virtual Utilisateur Vendeur { get; set; } = null!;
 }

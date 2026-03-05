@@ -1,0 +1,45 @@
+@model IEnumerable<tp1.Models.PanierItem>
+@{
+    ViewData["Title"] = "Mon Panier";
+}
+
+<div class="container mt-5">
+    <h2>Mon Panier</h2>
+    @if (!Model.Any()) {
+        <div class="alert alert-info">Votre panier est vide. <a asp-controller="Home" asp-action="Index">Continuer vos achats</a></div>
+    } else {
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Sous-total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            <img src="@item.Produit.ImageUrl" style="width: 50px;"> 
+                            @item.Produit.Titre
+                        </td>
+                        <td>@item.Produit.Prix.ToString("C2")</td>
+                        <td>@item.Quantite</td>
+                        <td>@((item.Produit.Prix * item.Quantite).ToString("C2"))</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total :</td>
+                    <td colspan="2" class="h4 text-success">@Model.Sum(x => x.Produit.Prix * x.Quantite).ToString("C2")</td>
+                </tr>
+            </tfoot>
+        </table>
+        <button class="btn btn-primary float-end">
+            Payer
+        </button>
+    }
+</div>
