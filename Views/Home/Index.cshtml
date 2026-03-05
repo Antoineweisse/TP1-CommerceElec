@@ -5,16 +5,26 @@
 }
 
 <div class="container mt-4">
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <h1 class="display-5">Nos Produits</h1>
-        </div>
+    <div class="row mb-4 align-items-center">
         <div class="col-md-4">
+            <h1 class="display-5 mb-0">Nos Produits</h1>
+        </div>
+
+        <div class="col-md-5">
             <form asp-action="Index" method="get" class="d-flex">
                 <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
-                <input class="form-control me-2" type="search" placeholder="Rechercher un produit..." aria-label="Search" name="search">
+                <input class="form-control me-2" type="search" placeholder="Rechercher..." name="search" value="@Context.Request.Query["search"]">
                 <button class="btn btn-outline-primary" type="submit">Rechercher</button>
             </form>
+        </div>
+
+        <div class="col-md-3 text-end">
+            <a asp-controller="Panier" asp-action="Index" class="btn btn-outline-secondary position-relative">
+                Mon Panier
+            </a>
+            <a class="btn btn-primary-outline" asp-controller="Auth" asp-action="MonCompte">
+                Mon Compte
+            </a>
         </div>
     </div>
 

@@ -71,4 +71,17 @@ public class AuthController : Controller
             return Convert.ToBase64String(bytes);
         }
     }
+
+    // public async Task<IActionResult> Profil()
+    // {
+    //     // int? userId = HttpContext.Session.GetInt32("UserId");
+    //     // if (userId == null) return RedirectToAction("Login");
+
+    //     // var utilisateur = await _context.Utilisateurs
+    //     //     .FirstOrDefaultAsync(u => u.Id == userId);
+        
+    //     // if (utilisateur == null) return RedirectToAction("Login");
+
+    //     // return View(utilisateur);
+    // }
 }
